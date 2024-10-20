@@ -9,7 +9,7 @@ http:
 #   uri: "localhost:6379"
 
 mongo:
-  uri: "mongodb://user:password@localhost:27017"
+  uri: "mongodb://user:password@mongodb:27017"
   db: profiles
   connectTimeout: 10s
 
