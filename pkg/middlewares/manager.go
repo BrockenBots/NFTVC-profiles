@@ -23,8 +23,8 @@ func NewMiddlewareManager(log logger.Logger, cfg *config.Config, authClient *cli
 
 func (m *MiddlewareManager) CORS() echo.MiddlewareFunc {
 	corsConfig := middleware.CORSConfig{
-		AllowOrigins: []string{"*"},
-		AllowMethods: []string{echo.GET, echo.POST, echo.OPTIONS},
+		AllowOrigins: []string{"*"}, // Пока так
+		AllowMethods: []string{echo.GET, echo.POST, echo.PUT, echo.OPTIONS},
 		AllowHeaders: []string{"Content-Type", "Authorization"},
 	}
 

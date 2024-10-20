@@ -19,7 +19,7 @@ func (s *server) mapRoutes() {
 
 	authGroup.POST("/", s.profileController.Save)
 	authGroup.GET("/me", s.profileController.GetMe)
-	authGroup.PUT("/", s.profileController.Update)
+	authGroup.PATCH("/", s.profileController.Update)
 
 	s.echo.GET("/swagger/*", echoSwagger.WrapHandler)
 }
