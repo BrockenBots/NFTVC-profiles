@@ -13,13 +13,13 @@ func (s *server) runHttpServer() error {
 }
 
 func (s *server) mapRoutes() {
-	authGroup := s.echo.Group("api/profiles/", s.middleware.AuthMiddleware)
+	s.echo.GET("api/profiles/:id", s.profileController.GetById)
+
+	authGroup := s.echo.Group("api/profiles", s.middleware.AuthMiddleware)
 
 	authGroup.POST("/", s.profileController.Save)
-	authGroup.GET("/", s.profileController.GetMe)
+	authGroup.GET("/me", s.profileController.GetMe)
 	authGroup.PUT("/", s.profileController.Update)
-
-	s.echo.GET("/{id}", s.profileController.GetById)
 
 	s.echo.GET("/swagger/*", echoSwagger.WrapHandler)
 }

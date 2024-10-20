@@ -1,0 +1,166 @@
+definitions:
+  model.Profile:
+    properties:
+      account_id:
+        type: string
+      description:
+        type: string
+      email:
+        type: string
+      login:
+        type: string
+      name:
+        type: string
+      photo:
+        type: string
+      profile_id:
+        type: string
+    type: object
+  requests.SaveProfileRequest:
+    properties:
+      description:
+        type: string
+      email:
+        type: string
+      login:
+        type: string
+      name:
+        type: string
+      photo:
+        type: string
+      photo_filename:
+        type: string
+      role:
+        type: string
+    required:
+    - login
+    - role
+    type: object
+  requests.UpdateProfileRequest:
+    properties:
+      description:
+        type: string
+      email:
+        type: string
+      login:
+        type: string
+      name:
+        type: string
+      photo:
+        type: string
+      photo_filename:
+        type: string
+    type: object
+  response.ErrorResponse:
+    properties:
+      error:
+        type: string
+    required:
+    - error
+    type: object
+  response.SaveProfileResponse:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/profiles/:
+    post:
+      consumes:
+      - application/json
+      description: Save a new profile
+      parameters:
+      - description: Profile Data
+        in: body
+        name: profile
+        required: true
+        schema:
+          $ref: '#/definitions/requests.SaveProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.SaveProfileResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Save Profile
+      tags:
+      - profiles
+    put:
+      consumes:
+      - application/json
+      description: Update an existing profile
+      parameters:
+      - description: Profile Data
+        in: body
+        name: profile
+        required: true
+        schema:
+          $ref: '#/definitions/requests.UpdateProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Profile'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Update Profile
+      tags:
+      - profiles
+  /api/profiles/{id}:
+    get:
+      description: Get a profile by its ID
+      parameters:
+      - description: Profile ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Profile'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Get Profile by ID
+      tags:
+      - profiles
+  /api/profiles/me:
+    get:
+      description: Retrieve the current user's profile
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Profile'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Get current user's profile
+      tags:
+      - profiles
+swagger: "2.0"

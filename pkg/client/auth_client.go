@@ -29,15 +29,16 @@ type VerifyTokenRequest struct {
 }
 
 type VerifyTokenResponse struct {
-	AccountId string `json:"accountId,omitempty"`
+	AccountId string `json:"account_id,omitempty"`
 }
 
 type ChangeRoleRequest struct {
-	Role string `json:"access_token"`
+	Role string `json:"role"`
 }
 
 type ChangeRoleResponse struct {
-	Message string `json:"message,omitempty"`
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
 }
 
 func (a *AuthClient) VerifyToken(accessToken string) (*VerifyTokenResponse, error) {
@@ -79,7 +80,7 @@ func (a *AuthClient) VerifyToken(accessToken string) (*VerifyTokenResponse, erro
 	return &verifyResponse, nil
 }
 
-func (a *AuthClient) ChangeRole(role string, accessToken string) error {
+func (a *AuthClient) ChangeRole(role string, accessToken string) (*ChangeRoleResponse, error) {
 	url := fmt.Sprintf("%s/api/auth/change-role", a.baseURL)
 
 	requestBody, err := json.Marshal(ChangeRoleRequest{
@@ -87,15 +88,34 @@ func (a *AuthClient) ChangeRole(role string, accessToken string) error {
 	})
 	if err != nil {
 		a.log.Error("Error marshaling VerifyToken request: ", err)
-		return err
+		return nil, err
 	}
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(requestBody))
 	if err != nil {
 		a.log.Error("Error creating new request: ", err)
-		return err
+		return nil, err
 	}
 
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", accessToken))
+	req.Header.Set("Content-Type", "application/json")
 
-	return nil
+	resp, err := a.httpClient.Do(req)
+	if err != nil {
+		a.log.Debugf("Error sending request to %s: %v", url, err)
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		a.log.Error("Non-OK HTTP status: ", resp.Status)
+		return nil, fmt.Errorf("non-OK HTTP status: %s", resp.Status)
+	}
+
+	var changeRole ChangeRoleResponse
+	if err := json.NewDecoder(resp.Body).Decode(&changeRole); err != nil {
+		a.log.Error("Error decoding response: ", err)
+		return nil, err
+	}
+
+	return &changeRole, nil
 }

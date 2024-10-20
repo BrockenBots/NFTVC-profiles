@@ -3,7 +3,7 @@ logger:
   devMode: true
   
 http: 
-  port: :8081
+  port: :8082
 
 # redis: 
 #   uri: "localhost:6379"
@@ -19,5 +19,5 @@ nonce:
 mongoCollections:
   profiles: profiles
 
-authClientURL: "localhost:8081"
-s3Url: "http://localhost:8081"
+authClientURL: "http://localhost:8081"
+s3Url: "http://localhost:8083"

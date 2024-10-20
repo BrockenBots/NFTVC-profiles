@@ -11,17 +11,13 @@ import (
 	"path/filepath"
 )
 
-type S3Interface interface {
-	UploadFile(file []byte, filename string) (string, error)
-}
-
 type S3Client struct {
 	cfg *config.Config
 	log logger.Logger
 }
 
-func NewS3Client(cfg *config.Config, log logger.Logger) S3Client {
-	return S3Client{cfg: cfg, log: log}
+func NewS3Client(cfg *config.Config, log logger.Logger) *S3Client {
+	return &S3Client{cfg: cfg, log: log}
 }
 
 func (s *S3Client) UploadFile(file []byte, filename string) (string, error) {

@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"nftvc-profile/internal/service"
 	"nftvc-profile/pkg/client"
 	"nftvc-profile/pkg/config"
 	"nftvc-profile/pkg/controllers"
@@ -15,6 +14,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -48,12 +48,12 @@ func (s *server) Run() error {
 	s.initMongoDBCollections(ctx)
 
 	authClient := client.NewAuthClient(s.log, s.cfg)
+	s3Client := client.NewS3Client(s.cfg, s.log)
 
 	middlewareManager := middlewares.NewMiddlewareManager(s.log, s.cfg, authClient)
 	s.middleware = middlewareManager
 	profileRepo := repo.NewProfileRepo(s.log, s.cfg, s.mongoClient)
-	profileService := service.NewProfileService(s.log, profileRepo, authClient)
-	profileController := controllers.NewProfileController(s.log, s.cfg, profileService)
+	profileController := controllers.NewProfileController(s.log, s.cfg, profileRepo, authClient, validator.New(), s3Client)
 
 	s.profileController = profileController
 

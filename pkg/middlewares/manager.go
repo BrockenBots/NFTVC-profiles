@@ -23,7 +23,7 @@ func NewMiddlewareManager(log logger.Logger, cfg *config.Config, authClient *cli
 
 func (m *MiddlewareManager) CORS() echo.MiddlewareFunc {
 	corsConfig := middleware.CORSConfig{
-		AllowOrigins: []string{"*"}, // Пока так
+		AllowOrigins: []string{"*"},
 		AllowMethods: []string{echo.GET, echo.POST, echo.OPTIONS},
 		AllowHeaders: []string{"Content-Type", "Authorization"},
 	}
@@ -38,40 +38,13 @@ func (m *MiddlewareManager) AuthMiddleware(next echo.HandlerFunc) echo.HandlerFu
 			return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Missing or invalid token"})
 		}
 
-		// claims, err := m.jwtManager.VerifyToken(context.Background(), accessToken)
-		// if err != nil {
-		// 	return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Missing or invalid token"})
-		// }
+		res, err := m.authClient.VerifyToken(accessToken)
+		if err != nil {
+			return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Invalid token: %"})
+		}
 
-		// sub, ok := claims["sub"].(string)
-		// if !ok {
-		// 	return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Token is invalid"})
-		// }
-		// deviceId, ok := claims["device_id"].(string)
-		// if !ok {
-		// 	return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Token is invalid"})
-		// }
-		// tokenType, ok := claims["token_type"].(string)
-		// if !ok || tokenType != "access" {
-		// 	return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Token is invalid"})
-		// }
-
-		// if !m.jwtManager.ExistAccessToken(context.Background(), sub, deviceId) {
-		// 	return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Token is expired"})
-		// }
-
-		// revoked := m.jwtManager.IsRevokedToken(context.Background(), sub, deviceId, accessToken)
-		// if revoked {
-		// 	return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Token in blacklist"})
-		// }
-
-		// c.Set("claims", claims)
-		// c.Set("token", accessToken)
-
+		c.Set("accountId", res.AccountId)
+		c.Set("token", accessToken)
 		return next(c)
 	}
-}
-
-func (m *MiddlewareManager) RequestToAuthService() error {
-	return nil
 }
