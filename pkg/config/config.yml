@@ -1,0 +1,23 @@
+logger: 
+  level: debug
+  devMode: true
+  
+http: 
+  port: :8081
+
+# redis: 
+#   uri: "localhost:6379"
+
+mongo:
+  uri: "mongodb://user:password@localhost:27017"
+  db: profiles
+  connectTimeout: 10s
+
+nonce:
+  exp: 900s
+
+mongoCollections:
+  profiles: profiles
+
+authClientURL: "localhost:8081"
+s3Url: "http://localhost:8081"
