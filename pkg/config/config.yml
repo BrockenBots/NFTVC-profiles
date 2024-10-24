@@ -19,5 +19,5 @@ nonce:
 mongoCollections:
   profiles: profiles
 
-authClientURL: "auth:8081"
-s3Url: "s3:8083"
+authClientURL: "http://auth:8081"
+s3Url: "http://s3:8083"
