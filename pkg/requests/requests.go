@@ -2,7 +2,7 @@ package requests
 
 type SaveProfileRequest struct {
 	Login       string `json:"login" validate:"required"`
-	Name        string `json:"name,omitempty"`
+	Name        string `json:"name,omitempty" validate:"required"`
 	Email       string `json:"email,omitempty"`
 	Photo       string `json:"photo,omitempty"`
 	PhotoTitle  string `json:"photo_filename,omitempty"`

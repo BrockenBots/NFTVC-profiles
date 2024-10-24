@@ -44,7 +44,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.Profile"
+                            "$ref": "#/definitions/response.UpdateProfileResponse"
                         }
                     },
                     "400": {
@@ -117,7 +117,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.Profile"
+                            "$ref": "#/definitions/response.GetMeResponse"
                         }
                     },
                     "400": {
@@ -193,6 +193,7 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "login",
+                "name",
                 "role"
             ],
             "properties": {
@@ -253,6 +254,32 @@ const docTemplate = `{
                 }
             }
         },
+        "response.GetMeResponse": {
+            "type": "object",
+            "properties": {
+                "account_id": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "login": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "photo": {
+                    "type": "string"
+                },
+                "profile_id": {
+                    "type": "string"
+                }
+            }
+        },
         "response.SaveProfileResponse": {
             "type": "object",
             "properties": {
@@ -260,6 +287,32 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "refresh_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.UpdateProfileResponse": {
+            "type": "object",
+            "properties": {
+                "account_id": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "login": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "photo": {
+                    "type": "string"
+                },
+                "profile_id": {
                     "type": "string"
                 }
             }

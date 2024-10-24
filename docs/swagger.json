@@ -32,7 +32,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.Profile"
+                            "$ref": "#/definitions/response.UpdateProfileResponse"
                         }
                     },
                     "400": {
@@ -105,7 +105,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.Profile"
+                            "$ref": "#/definitions/response.GetMeResponse"
                         }
                     },
                     "400": {
@@ -181,6 +181,7 @@
             "type": "object",
             "required": [
                 "login",
+                "name",
                 "role"
             ],
             "properties": {
@@ -241,6 +242,32 @@
                 }
             }
         },
+        "response.GetMeResponse": {
+            "type": "object",
+            "properties": {
+                "account_id": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "login": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "photo": {
+                    "type": "string"
+                },
+                "profile_id": {
+                    "type": "string"
+                }
+            }
+        },
         "response.SaveProfileResponse": {
             "type": "object",
             "properties": {
@@ -248,6 +275,32 @@
                     "type": "string"
                 },
                 "refresh_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.UpdateProfileResponse": {
+            "type": "object",
+            "properties": {
+                "account_id": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "login": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "photo": {
+                    "type": "string"
+                },
+                "profile_id": {
                     "type": "string"
                 }
             }

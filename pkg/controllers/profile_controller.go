@@ -114,7 +114,7 @@ func (p *ProfileController) Save(ctx echo.Context) error {
 // @Summary Get current user's profile
 // @Description Retrieve the current user's profile
 // @Tags profiles
-// @Success 200 {object} model.Profile
+// @Success 200 {object} response.GetMeResponse
 // @Failure 400 {object} response.ErrorResponse
 // @Router /api/profiles/me [get]
 func (p *ProfileController) GetMe(ctx echo.Context) error {
@@ -125,7 +125,15 @@ func (p *ProfileController) GetMe(ctx echo.Context) error {
 		return ctx.JSON(http.StatusBadRequest, map[string]string{"error": fmt.Sprintf("Profile doesnt exist: %v", err)})
 	}
 
-	return ctx.JSON(http.StatusOK, profile)
+	return ctx.JSON(http.StatusOK, map[string]string{
+		"profile_id":  profile.Id,
+		"login":       profile.Login,
+		"name":        profile.Name,
+		"email":       profile.Email,
+		"photo":       profile.Photo,
+		"description": profile.Description,
+		"account_id":  profile.AccountId,
+	})
 }
 
 // Update godoc
@@ -135,7 +143,7 @@ func (p *ProfileController) GetMe(ctx echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param profile body requests.UpdateProfileRequest true "Profile Data"
-// @Success 200 {object} model.Profile
+// @Success 200 {object} response.UpdateProfileResponse
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
 // @Router /api/profiles/ [put]
@@ -189,7 +197,15 @@ func (p *ProfileController) Update(ctx echo.Context) error {
 		return ctx.JSON(http.StatusInternalServerError, map[string]string{"error": fmt.Sprintf("Failed to update profile: %v", err)})
 	}
 
-	return ctx.JSON(http.StatusOK, currentProfile)
+	return ctx.JSON(http.StatusOK, map[string]string{
+		"profile_id":  currentProfile.Id,
+		"login":       currentProfile.Login,
+		"name":        currentProfile.Name,
+		"email":       currentProfile.Email,
+		"photo":       currentProfile.Photo,
+		"description": currentProfile.Description,
+		"account_id":  currentProfile.AccountId,
+	})
 }
 
 func (p *ProfileController) GetByWalletAddress(ctx echo.Context) error {
